@@ -16,6 +16,7 @@
 #' @examples # Not run:
 #' # creates a convolution kernel with Gaussian function and sigma = 1.4
 #' K <- conv_kern(sigma = 1.4, k = 'gaussian')
+#' raster::image(K$matrix)
 conv_kern <- function(sigma = 1.4, k = c("gaussian", "LoG", "sharpen",
                                           "laplacian", "emboss", "sobel")) {
   k <- match.arg(k)
