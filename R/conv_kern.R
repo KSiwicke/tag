@@ -1,3 +1,21 @@
+#' Create a convolution kernel
+#'
+#' @description This function creates the convolution kernel for applying a filter to an array/matrix
+#' - spatialfil package is not available anymore, need to load function manually
+#'
+#' @param sigma The numeric value of standard deviation for the Gaussian or LoG filter
+#' @param k character value:
+#' "gaussian" for Gaussian kernel,
+#' "LoG" for Laplacian of Gaussian kernel,
+#' "sharpen" for 3x3 convolution matrix for sharpening edges, or
+#' "laplacian" for a 3x3 convolution matrix.
+#'
+#' @return A numeric convolution matrix
+#' @export
+#'
+#' @examples # Not run:
+#' # creates a convolution kernel with Gaussian function and sigma = 1.4
+#' K <- conv_kern(sigma = 1.4, k = 'gaussian')
 conv_kern <- function(sigma = 1.4, k = c("gaussian", "LoG", "sharpen",
                                           "laplacian", "emboss", "sobel")) {
   k <- match.arg(k)
