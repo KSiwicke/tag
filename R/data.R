@@ -7,3 +7,7 @@
 #' @rdname L
 #' @format NULL
 "L"
+
+#' @rdname bathy.maps.3k
+#' @format NULL
+"bathy.maps.3k"
