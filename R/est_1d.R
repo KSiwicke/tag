@@ -1,3 +1,13 @@
+#' Estimate 1 diffusion coefficient
+#'
+#' @description Provides the negative log likelihood used for estimating diffusion coefficient
+#'
+#' @param log_D the log of the diffusion coefficient
+#'
+#' @return numeric value of the negative log likelihood
+#' @export
+#'
+#' @examples est_1d(log_D = log(70))
 est_1d <- function(log_D = log(D)){
   D <- exp(log_D)
   sig <- sqrt(2 * D / (h / 1000)^2) # resolution /1000 converts D into map units, in km
@@ -10,7 +20,7 @@ est_1d <- function(log_D = log(D)){
     p1 <- imager::as.cimg(t(post))
     K <- imager::as.cimg(kern$matrix)
     q <- imager::convolve(p1, K)
-    q1 <- t(as.matrix(q))
+    q1 <- t(terra::as.matrix(q))
     q1[land==0] <- 0
     pred[, , i] <- q1
     post <- L[, , i] * q1

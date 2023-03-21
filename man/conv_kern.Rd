@@ -31,4 +31,5 @@ This function creates the convolution kernel for applying a filter to an array/m
 # Not run:
 # creates a convolution kernel with Gaussian function and sigma = 1.4
 K <- conv_kern(sigma = 1.4, k = 'gaussian')
+raster::image(K$matrix)
 }
