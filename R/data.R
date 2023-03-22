@@ -1,13 +1,24 @@
-#' Example data
+#' Likelihood example
 #'
-#' An example likelihood from a Pacific cod in the Aleutian Islands
+#' Example of a likelihood for a Pacific cod in the Aleutian Islands.
 #'
-#' @format null An array with likelihoods in each cell of the grid for each day
-
-#' @rdname L
-#' @format NULL
+#' @name L
+#' @keywords likelihood
+#' @docType data
+#' @format A large array
+#' @details
+#'     details for likelihood
+#'
 "L"
 
-#' @rdname bathy.maps.3k
-#' @format NULL
-"bathy.maps.3k"
+#' Bathymetry example
+#'
+#' Example of bathymetry used for a Pacific cod in the Alrutian Islands.
+#'
+#' @format A matrix
+#' @name bathy
+#' @docType data
+#' @details
+#'     details for bathymetry
+#'
+"bathy"

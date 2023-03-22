@@ -3,14 +3,18 @@
 \docType{data}
 \name{L}
 \alias{L}
-\title{Example data}
+\title{Likelihood example}
 \format{
-null An array with likelihoods in each cell of the grid for each day
+A large array
 }
 \usage{
 L
 }
 \description{
-An example likelihood from a Pacific cod with associated bathymetry file
+Example of a likelihood for a Pacific cod in the Aleutian Islands.
 }
-\keyword{datasets}
+\details{
+\if{html}{\out{<div class="sourceCode">}}\preformatted{details for likelihood
+}\if{html}{\out{</div>}}
+}
+\keyword{likelihood}

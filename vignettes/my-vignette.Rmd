@@ -1,0 +1,19 @@
+---
+title: "tag"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{tag}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Load the *tag* package:
+```{r setup, include = FALSE}
+library(tag)
+```
+
+```{r} 
+data(bathy)
+mean(bathy)
+```
+

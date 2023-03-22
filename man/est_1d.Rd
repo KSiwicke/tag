@@ -4,10 +4,16 @@
 \alias{est_1d}
 \title{Estimate 1 diffusion coefficient}
 \usage{
-est_1d(log_D = log(D))
+est_1d(log_D = log(D), h = h, L = L, land = land)
 }
 \arguments{
 \item{log_D}{the log of the diffusion coefficient}
+
+\item{h}{Resolution, or the length of a side in meters}
+
+\item{L}{Likelihood for your fish over space and indexed by time}
+
+\item{land}{Raster of land so that any probability on land can be set to zero each step}
 }
 \value{
 numeric value of the negative log likelihood
@@ -16,5 +22,5 @@ numeric value of the negative log likelihood
 Provides the negative log likelihood used for estimating diffusion coefficient
 }
 \examples{
-est_1d(log_D = log(70))
+est_1d(log_D = log(70), h = h, L = L, land = land)
 }
