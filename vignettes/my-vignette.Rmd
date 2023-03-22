@@ -14,13 +14,20 @@ knitr::opts_chunk$set(
 )
 ```
 
-Load the *tag* package:
+Load the *tag* package:ck
 ```{r setup}
 library(tag)
+library(terra)
+library(lubridate)
+library(tidyterra)
+library(dplyr)
 ```
 
-```{r} 
+```{r, echo = FALSE} 
 devtools::load_all() # To delete
-head(bathy)
+
+```
+
+```{r}
 ```
 

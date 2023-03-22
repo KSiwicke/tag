@@ -1,24 +1,14 @@
-#' Likelihood example
+#' Data to demonstrate Hidden Markov Model of a Pacific Cod
 #'
-#' Example of a likelihood for a Pacific cod in the Aleutian Islands.
+#' Data sufficient to replicate some features of the application of a
+#'      Hidden Markov model to Aleutian Islands Pacific cod
 #'
-#' @name L
-#' @keywords likelihood
+#' \itemize{
+#'   \item \code{bathy} Stars object containing bathymetry
+#'   \item \code{L} Stars object containing daily likelihoods
+#' }
+#'
+#' @name cod_ex
 #' @docType data
-#' @format A large array
-#' @details
-#'     details for likelihood
-#'
-"L"
-
-#' Bathymetry example
-#'
-#' Example of bathymetry used for a Pacific cod in the Alrutian Islands.
-#'
-#' @format A matrix
-#' @name bathy
-#' @docType data
-#' @details
-#'     details for bathymetry
-#'
-"bathy"
+#' @keywords data
+NULL
