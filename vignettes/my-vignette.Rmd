@@ -26,6 +26,12 @@ library(dplyr)
 ```{r, echo = FALSE} 
 devtools::load_all() # To delete
 
+bathy <- cod_ex[[1]]
+names(bathy) <- "depth"
+
+L <- cod_ex[[2]]
+names(L) <- "likelihood"
+
 ```
 
 ```{r}
