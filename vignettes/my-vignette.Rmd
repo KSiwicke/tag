@@ -17,23 +17,34 @@ knitr::opts_chunk$set(
 Load the *tag* package:ck
 ```{r setup}
 library(tag)
-library(terra)
-library(lubridate)
-library(tidyterra)
+# library(terra)
+# library(lubridate)
+# library(tidyterra)
 library(dplyr)
+# library(stars)
 ```
 
 ```{r, echo = FALSE} 
 devtools::load_all() # To delete
 
-bathy <- cod_ex[[1]]
-names(bathy) <- "depth"
-
-L <- cod_ex[[2]]
-names(L) <- "likelihood"
-
+# bathy <- cod_ex[[1]]
+# L <- cod_ex[[2]]
+fish_data <- cod_ex[[3]]
+L <- cod_ex[[4]]
+land <- cod_ex[[5]]
+h <- 3000
 ```
 
 ```{r}
+# st_dimensions(bathy)$x$delta # resolution in x direction
+# st_dimensions(bathy)$y$delta # resolution in y direction
+# h <- st_dimensions(bathy)$x$delta
+
+# land <- bathy %>%
+#   mutate(depth = ifelse(depth < 15, 0, 1)) # 15-m cutoff, but can change as needed
+
+smooth <- fwd_bck(D = c(10, 75), h = h, L = L, land = land, fish_data = fish_data)
+
+plot(terra::rast(smooth)[[c(1,15,30,45,60,75,90)]])
 ```
 

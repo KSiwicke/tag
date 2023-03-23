@@ -3,7 +3,7 @@
 #' @param D Diffusion coefficient for 1 or 2 movement states, can be preselected or estimated
 #' @param h Resolution, or the length of a side in meters
 #' @param L Likelihood for your fish over space and indexed by time
-#' @param fish.data Data on individual fish, used here for multiple movement states (mvst)
+#' @param fish_data Data on individual fish, used here for multiple movement states (mvst)
 #' @param land Raster of land so that any probability on land can be set to zero each step
 #'
 #' @return A numeric negaitve-log-likelihood value.
@@ -14,7 +14,7 @@
 #' est.D <- optim(50, fwd_filter, lower = 2, upper = 300, method = "Brent")
 #' # need to choose upper and lower boundaries
 
-fwd_bck <- function(D = D, h = h, L = L, fish.data = fish.data, land = land) {
+fwd_bck <- function(D = D, h = h, L = L, fish_data = fish_data, land = land) {
   pred <- array(0, dim = dim(L)) # predicted
   phi <- array(0, dim = dim(L))  # holds probability
   phi[, , 1] <- L[, , 1] # All probability in release location, dirac delta
@@ -30,10 +30,10 @@ fwd_bck <- function(D = D, h = h, L = L, fish.data = fish.data, land = land) {
   }
 
   for (i in 2:icalc) {
-    if (fish.data$mvst[i] == 1) {
+    if (fish_data$mvst[i] == 1) {
       kern <- kern1
     }
-    else if (fish.data$mvst[i] == 2) {
+    else if (fish_data$mvst[i] == 2) {
       kern <- kern2
     }
     p1 <- imager::as.cimg(t(post))
@@ -54,9 +54,9 @@ fwd_bck <- function(D = D, h = h, L = L, fish.data = fish.data, land = land) {
   for(i in icalc:2) {
     ratio <- smooth[, , i] / (pred[, , i] + 1e-15)
     p1 = imager::as.cimg(t(ratio))
-    if (fish.data$mvst[i] == 1) {
+    if (fish_data$mvst[i] == 1) {
       kern <- kern1
-    } else if (fish.data$mvst[i] == 2) {
+    } else if (fish_data$mvst[i] == 2) {
       kern <- kern2
     }
     K <- imager::as.cimg(kern$matrix)

@@ -4,7 +4,7 @@
 \alias{fwd_bck}
 \title{Forward filter for 1- or 2-state movement to estimate diffusion.}
 \usage{
-fwd_bck(D = D, h = h, L = L, fish.data = fish.data, land = land)
+fwd_bck(D = D, h = h, L = L, fish_data = fish_data, land = land)
 }
 \arguments{
 \item{D}{Diffusion coefficient for 1 or 2 movement states, can be preselected or estimated}
@@ -13,7 +13,7 @@ fwd_bck(D = D, h = h, L = L, fish.data = fish.data, land = land)
 
 \item{L}{Likelihood for your fish over space and indexed by time}
 
-\item{fish.data}{Data on individual fish, used here for multiple movement states (mvst)}
+\item{fish_data}{Data on individual fish, used here for multiple movement states (mvst)}
 
 \item{land}{Raster of land so that any probability on land can be set to zero each step}
 }
