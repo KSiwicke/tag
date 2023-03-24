@@ -2,7 +2,7 @@
 #'
 #' @description Provides the negative log likelihood used for estimating diffusion coefficient
 #'
-#' @param log_D the log of the diffusion coefficient
+#' @param D the diffusion coefficient
 #' @param h Resolution, or the length of a side in meters
 #' @param L Likelihood for your fish over space and indexed by time
 #' @param land Raster of land so that any probability on land can be set to zero each step
@@ -12,8 +12,7 @@
 #' @export
 #'
 #' @examples est_1d(log_D = log(70), h = h, L = L, land = land)
-est_1d <- function(log_D = log(D), h = h, L = L, land = land){
-  D <- exp(log_D)
+est_1d_2 <- function(D = D, h = h, L = L, land = land) {
   sig <- sqrt(2 * D / (h / 1000)^2) # resolution /1000 converts D into map units, in km
   kern <- conv_kern(sigma = sig, k = 'gaussian')
   pred <- array(0, dim = dim(L)) #predicted

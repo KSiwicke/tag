@@ -22,6 +22,7 @@ library(terra)
 # library(tidyterra)
 library(dplyr)
 library(stars)
+library(bbmle)
 ```
 
 ```{r} 
@@ -34,12 +35,66 @@ h <- st_dimensions(bathy)$x$delta
 
 land <- bathy %>%
   mutate(depth = ifelse(depth < 15, 0, 1)) # 15-m cutoff, but can change as needed
+
+
+
 fish_data <- cod_ex[[3]]
 L <- cod_ex[[4]]
 ```
 
 ```{r, dev = 'png'}
 smooth <- fwd_bck(D = c(10, 75), h = h, L = L, land = t(land$depth), fish_data = fish_data)
+
+sm_ras <- rast(smooth)
+plot(sm_ras[[20]])
+plot(sm_ras[[40]])
+plot(sm_ras[[60]])
+plot(sm_ras[[80]])
+```
+
+Now, instead of providing diffusion coefficients, estimate them through maximum likelihood. The est_1d function returns the negative log likelihood.
+
+``` {r}
+est_2d(log_D1 = log(5), log_D2 = log(119), h = h, L = L, land = t(land$depth), fish_data = fish_data)
+
+Params <- list(log_D1 = log(10), log_D2 = log(75))
+Data <- list(h = h, L = L, land = t(land$depth), fish_data = fish_data)
+est_2D <- mle2(est_2d, 
+               start = Params, 
+               data = Data, 
+               method = "L-BFGS-B", 
+               optimizer = "optim",
+               lower = 1.61,
+               upper = 5.01) # need to choose upper and lower boundaries
+
+plot(profile(est_2D))
+```
+
+``` {r}
+# est_1d(log_D = log(70), h = h, L = L, land = t(land$depth))
+# 
+# est_D <- mle2(est_1d, start = list(log_D = log(70)),
+#               data = list(h = h, L = L, land = t(land$depth)),
+#               method = "Brent", optimizer = "optim",
+#               lower = log(2), upper = log(300)) # need to choose upper and lower boundaries
+# 
+# plot(profile(est_D))
+
+```
+``` {r}
+# est_1d_2(D = 70, h = h, L = L, land = t(land$depth))
+# 
+# est_D_2 <- mle2(est_1d_2, start = list(D = 70),
+#               data = list(h = h, L = L, land = t(land$depth)),
+#               method = "Brent", optimizer = "optim",
+#               lower = 2, upper = 300) # need to choose upper and lower boundaries
+# 
+# plot(profile(est_D_2))
+
+```
+
+```{r, dev = 'png'}
+smooth <- fwd_bck(D = 94, h = h, L = L, land = t(land$depth), fish_data = fish_data)
 
 sm_ras <- rast(smooth)
 plot(sm_ras[[20]])

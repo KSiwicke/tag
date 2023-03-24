@@ -30,11 +30,11 @@ fwd_bck <- function(D = D, h = h, L = L, fish_data = fish_data, land = land) {
   }
 
   for (i in 2:icalc) {
-    if (fish_data$mvst[i] == 1) {
-      kern <- kern1
-    }
-    else if (fish_data$mvst[i] == 2) {
-      kern <- kern2
+    kern <- kern1
+    if ( length(D) > 1) {
+      if (fish_data$mvst[i] == 2) {
+        kern <- kern2
+      }
     }
     p1 <- imager::as.cimg(t(post))
     K <- imager::as.cimg(kern$matrix)
@@ -54,10 +54,11 @@ fwd_bck <- function(D = D, h = h, L = L, fish_data = fish_data, land = land) {
   for(i in icalc:2) {
     ratio <- smooth[, , i] / (pred[, , i] + 1e-15)
     p1 = imager::as.cimg(t(ratio))
-    if (fish_data$mvst[i] == 1) {
-      kern <- kern1
-    } else if (fish_data$mvst[i] == 2) {
-      kern <- kern2
+    kern <- kern1
+    if ( length(D) > 1) {
+      if (fish_data$mvst[i] == 2) {
+        kern <- kern2
+      }
     }
     K <- imager::as.cimg(kern$matrix)
     Rp1 <- imager::convolve(p1, K)
