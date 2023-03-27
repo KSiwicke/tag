@@ -2,7 +2,4 @@
 
 export(conv_kern)
 export(est_1d)
-export(est_1d_2)
-export(est_2d)
 export(fwd_bck)
-export(rev_lat)
