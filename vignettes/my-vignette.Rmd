@@ -41,9 +41,10 @@ fish_data <- cod_ex[[3]]
 L <- cod_ex[[4]]
 ```
 
-```{r, fig.height = 8, fig.width = 10}
+```{r, fig.height = 20, fig.width = 12}
 smooth <- tag::fwd_bck(D = 94, h = h, L = L, land = t(land$depth), fish_data = fish_data)
 
+lnd <- terra::rast(t(land$depth))
 sm_ras <- terra::rast(smooth)
 par(mfrow = c(4,1))
 terra::plot(sm_ras[[20]])
