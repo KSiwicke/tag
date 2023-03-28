@@ -24,7 +24,13 @@ A numeric negaitve-log-likelihood value.
 Forward filter for 1- or 2-state movement to estimate diffusion.
 }
 \examples{
-fwd_filter(50.3)
-est.D <- optim(50, fwd_filter, lower = 2, upper = 300, method = "Brent")
-# need to choose upper and lower boundaries
+h <- 1000 # 1 km resolution
+set.seed(43516)
+bathy <- matrix(rnorm(100, 50, 30), nrow = 10)
+land <- ifelse(bathy > 0, 1, 0)
+L <- array(0, dim = c(dim(bathy), 2))
+L[5, 5, 1] <- 1
+L[6, 6, 2] <- 1
+fish_data <- data.frame("mvmt" = c(1, 1))
+fwd_bck(D = 10, h = h, L = L, land = land, fish_data = fish_data)
 }

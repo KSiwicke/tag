@@ -11,7 +11,15 @@
 #' @return numeric value of the negative log likelihood
 #' @export
 #'
-#' @examples est_1d(log_D = log(70), h = h, L = L, land = land)
+#' @examples
+#' h <- 1000 # 1 km resolution
+#' set.seed(43516)
+#' bathy <- matrix(rnorm(100, 50, 30), nrow = 10)
+#' land <- ifelse(bathy > 0, 1, 0)
+#' L <- array(0, dim = c(dim(bathy), 2))
+#' L[5, 5, 1] <- 1
+#' L[6, 6, 2] <- 1
+#' est_1d(log_D = log(10), h = h, L = L, land = land)
 est_1d <- function(log_D = log(D), h = h, L = L, land = land){
   D <- exp(log_D)
   sig <- sqrt(2 * D / (h / 1000)^2) # resolution /1000 converts D into map units, in km

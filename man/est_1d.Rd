@@ -22,5 +22,12 @@ numeric value of the negative log likelihood
 Provides the negative log likelihood used for estimating diffusion coefficient
 }
 \examples{
-est_1d(log_D = log(70), h = h, L = L, land = land)
+h <- 1000 # 1 km resolution
+set.seed(43516)
+bathy <- matrix(rnorm(100, 50, 30), nrow = 10)
+land <- ifelse(bathy > 0, 1, 0)
+L <- array(0, dim = c(dim(bathy), 2))
+L[5, 5, 1] <- 1
+L[6, 6, 2] <- 1
+est_1d(log_D = log(10), h = h, L = L, land = land)
 }

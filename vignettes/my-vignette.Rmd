@@ -30,25 +30,26 @@ library(imager)
 devtools::load_all() # To delete
 
 bathy <- cod_ex[[1]]
-st_dimensions(bathy)$x$delta # resolution in x direction
-st_dimensions(bathy)$y$delta # resolution in y direction
-h <- st_dimensions(bathy)$x$delta
+stars::st_dimensions(bathy)$x$delta # resolution in x direction
+stars::st_dimensions(bathy)$y$delta # resolution in y direction
+h <- stars::st_dimensions(bathy)$x$delta
 
 land <- bathy %>%
-  mutate(depth = ifelse(depth < 15, 0, 1)) # 15-m cutoff, but can change as needed
+  dplyr::mutate(depth = ifelse(depth < 15, 0, 1)) # 15-m cutoff, but can change as needed
 
 fish_data <- cod_ex[[3]]
 L <- cod_ex[[4]]
 ```
 
-```{r, dev = 'png'}
-smooth <- fwd_bck(D = 94, h = h, L = L, land = t(land$depth), fish_data = fish_data)
+```{r, fig.height = 8, fig.width = 10}
+smooth <- tag::fwd_bck(D = 94, h = h, L = L, land = t(land$depth), fish_data = fish_data)
 
-sm_ras <- rast(smooth)
-plot(sm_ras[[20]])
-plot(sm_ras[[40]])
-plot(sm_ras[[60]])
-plot(sm_ras[[80]])
+sm_ras <- terra::rast(smooth)
+par(mfrow = c(4,1))
+terra::plot(sm_ras[[20]])
+terra::plot(sm_ras[[40]])
+terra::plot(sm_ras[[60]])
+terra::plot(sm_ras[[80]])
 ```
 
 Now, instead of providing diffusion coefficients, estimate them through maximum likelihood. The est_1d function returns the negative log likelihood.
