@@ -20,35 +20,33 @@
 #' fish_data <- data.frame("mvmt" = c(1, 1))
 #' fwd_bck(D = 10, h = h, L = L, land = land, fish_data = fish_data)
 
-fwd_bck <- function(D = D, h = h, L = L, fish_data = fish_data, land = land) {
+fwd_bck_terra <- function(D = D, h = h, L = L, fish_data = fish_data, land = land) {
   pred <- array(0, dim = dim(L)) # predicted
   phi <- array(0, dim = dim(L))  # holds probability
   phi[, , 1] <- L[, , 1] # All probability in release location, dirac delta
   post <- L[, , 1] # Location at Day one is posterior for Day 1
   icalc <- dim(L)[3] # number of days at liberty
-  # lambda <- rep(NA, icalc - 1) # Holds sum of probabilities for each time step, basis of maximum likelihood
-  sig.kern1 <- sqrt(2 * D[1] / ((h / 1000) ^ 2)) # h/1000 converts D into map units, in km
-  kern1 <- conv_kern(sigma = sig.kern1, k = 'gaussian')
+  sig1 <- sqrt(2 * D[1] / ((h / 1000) ^ 2)) # h/1000 converts D into map units, in km
 
   if (length(D) > 1) {
-    sig.kern2 <- sqrt(2 * D[2] / ((h / 1000) ^ 2)) # h/1000 converts D into map units, in km
-    kern2 <- conv_kern(sigma = sig.kern2, k = 'gaussian')
+    sig2 <- sqrt(2 * D[2] / ((h / 1000) ^ 2)) # h/1000 converts D into map units, in km
   }
 
   for (i in 2:icalc) {
-    kern <- kern1
+    sig <- sig1
     if (length(D) > 1) {
       if (fish_data$mvst[i] == 2) {
-        kern <- kern2
+        sig <- sig2
       }
     }
-    p1 <- imager::as.cimg(t(post))
-    K <- imager::as.cimg(kern$matrix)
-    q <- imager::convolve(p1, K)
-    q1 <- t(terra::as.matrix(q))
+    p1 <- terra::rast(post)
+    K <- terra::focalMat(p1, sig, "Gauss", fillNA = TRUE)
+    q <- terra::focal(p1, w = K, na.rm=TRUE)
+    q1 <- terra::rast(extent = terra::ext(land), resolution = terra::res(land), vals = terra::values(q))
+    terra::crs(q1) <- terra::crs(land)
     q1[land == 0] <- 0
-    pred[, , i] <- q1
-    post <- L[, , i] * q1
+    pred[, , i] <- terra::as.matrix(q1, wide = TRUE)
+    post <- L[, , i] * pred[, , i]
     # lambda[i - 1] <- sum(post)
     post <- post / sum(post)
     phi[, , i] <- post
@@ -59,18 +57,20 @@ fwd_bck <- function(D = D, h = h, L = L, fish_data = fish_data, land = land) {
 
   for(i in icalc:2) {
     ratio <- smooth[, , i] / (pred[, , i] + 1e-15)
-    p1 = imager::as.cimg(t(ratio))
-    kern <- kern1
-    if ( length(D) > 1) {
+    p1 <- terra::rast(ratio)
+    sig <- sig1
+    if (length(D) > 1) {
       if (fish_data$mvst[i] == 2) {
-        kern <- kern2
+        sig <- sig2
       }
     }
-    K <- imager::as.cimg(kern$matrix)
-    Rp1 <- imager::convolve(p1, K)
-    Rp1 = t(terra::as.matrix(Rp1))
-    Rp1[land == 0] <- 0 # Added that was not present before...KAS
-    smooth[, , i - 1] <- phi[, , i - 1] * Rp1
+    K <- terra::focalMat(p1, sig, "Gauss", fillNA = TRUE)
+    Rp <- terra::focal(p1, w = K, na.rm=TRUE)
+    Rp1 <- terra::rast(extent = terra::ext(land), resolution = terra::res(land), vals = terra::values(Rp))
+    terra::crs(Rp1) <- terra::crs(land)
+    Rp1[land == 0] <- 0
+    pred[, , i] <- terra::as.matrix(Rp1, wide = TRUE)
+    smooth[, , i - 1] <- phi[, , i - 1] * pred[, , i]
     smooth[, , i - 1] <- smooth[, , i - 1] / sum(smooth[, , i - 1])
   }
   return(smooth)

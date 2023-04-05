@@ -28,6 +28,5 @@ Depends:
 LazyData: true
 Imports:
     terra,
-    imager,
-    lubridate
+    imager
 VignetteBuilder: knitr

@@ -3,4 +3,5 @@
 export(conv_kern)
 export(est_1d)
 export(fwd_bck)
+export(fwd_bck_terra)
 export(getAEA)
