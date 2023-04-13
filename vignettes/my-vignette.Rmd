@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 Load the *tag* package:
-```{r setup}
+```{r setup, echo = FALSE}
 library(tag)
 library(terra)
 library(tictoc)
@@ -81,12 +81,12 @@ This version only has removed *raster* and *imager* packages, and is mainly usin
 
 ```{r, fig.height = 20, fig.width = 12}
 bathy <- terra::rast(cod_ex[[1]]) # load bathymetry as a stars object, but convert to terra raster
-
+names(bathy) <- "depth"
 h <- terra::res(bathy)[1] # resolution in meters
 
 # identify land as a 0
 land2 <- bathy %>%
-  dplyr::mutate(depth = ifelse(lyr.1 < 15, 0, 1)) %>% 
+  dplyr::mutate(depth = ifelse(depth < 15, 0, 1)) %>% 
   dplyr::select(depth) # 15-m cutoff, but can change as needed
 
 tictoc::tic()
