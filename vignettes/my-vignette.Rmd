@@ -46,6 +46,7 @@ You can estimate diffusion coefficients through maximum likelihood estimation. T
 ``` {r}
 tag::est_1d(log_D = log(90), h = h, L = L, land = t(land$depth))
 # example, returns the negative log likelihood
+
 # 
 # Params <- list(log_D = log(90))
 # Data <- list(h = h, L = L, land = t(land$depth))
