@@ -105,11 +105,11 @@ terra::plot(sm_ras[[80]])
 ```
 
 ```{r, fig.height = 10, fig.width = 15}
-err_gr <- err_grid(smooth = smooth, fish_data = fish_data)
+err_gr <- tag::err_grid(smooth = smooth, fish_data = fish_data)
 
-err.grid.99 <- err_gr[names(err_gr) == "q99"]
+err.grid.99 <- tag::err_gr[names(err_gr) == "q99"]
 
-err.grid.50 <- err_gr[names(err_gr) == "q50"]
+err.grid.50 <- tag::err_gr[names(err_gr) == "q50"]
 
 #Need to make list into one data frame with multiple polygons
 polygons.99 <- err.grid.99[[1]]

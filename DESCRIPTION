@@ -28,5 +28,6 @@ Depends:
 LazyData: true
 Imports:
     terra,
-    imager
+    imager,
+    magrittr
 VignetteBuilder: knitr
