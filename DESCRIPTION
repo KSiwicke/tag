@@ -19,7 +19,8 @@ Suggests:
     dplyr,
     testthat (>= 3.0.0),
     knitr,
-    rmarkdown
+    rmarkdown,
+    devtools
 Config/testthat/edition: 3
 URL: https://github.com/KSiwicke/tag, https://ksiwicke.github.io/tag/
 BugReports: https://github.com/KSiwicke/tag/issues
