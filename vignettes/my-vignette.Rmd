@@ -18,14 +18,14 @@ knitr::opts_chunk$set(
 
 Load the *tag* package:
 ```{r setup, echo = FALSE}
-library(tag)
-library(terra)
-library(tictoc)
-library(tidyterra)
-library(dplyr)
-library(stars)
-library(bbmle)
-library(imager)
+# library(tag)
+# library(terra)
+# library(tictoc)
+# library(tidyterra)
+# library(dplyr)
+# library(stars)
+# library(bbmle)
+# library(imager)
 ```
 
 ```{r} 
