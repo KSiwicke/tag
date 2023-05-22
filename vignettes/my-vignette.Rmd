@@ -16,9 +16,20 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Installation
+The `tag` package can be installed from [github](https://github.com/KSiwicke/tag) with:
+```{r, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("KSiwicke/tag")
+```
+
 Load the *tag* package:
-```{r setup, echo = FALSE}
-# library(tag)
+```{r setup, eval = FALSE}
+library(tag)
+```
+
+
+```{r, echo = FALSE}
 # library(terra)
 # library(tictoc)
 # library(tidyterra)
@@ -89,8 +100,8 @@ h <- terra::res(bathy)[1] # resolution in meters
 
 # identify land as a 0
 land2 <- bathy %>%
-  dplyr::mutate(depth = ifelse(depth < 15, 0, 1)) %>% 
-  dplyr::select(depth) # 15-m cutoff, but can change as needed
+  tidyterra::mutate(depth = ifelse(depth < 15, 0, 1)) %>% 
+  tidyterra::select(depth) # 15-m cutoff, but can change as needed
 
 tictoc::tic()
 smooth <- tag::fwd_bck_terra(D = 94, h = h, L = L, land = land2, fish_data = fish_data)
@@ -107,9 +118,9 @@ terra::plot(sm_ras[[80]])
 ```{r, fig.height = 10, fig.width = 15}
 err_gr <- tag::err_grid(smooth = smooth, fish_data = fish_data)
 
-err.grid.99 <- tag::err_gr[names(err_gr) == "q99"]
+err.grid.99 <- err_gr[names(err_gr) == "q99"]
 
-err.grid.50 <- tag::err_gr[names(err_gr) == "q50"]
+err.grid.50 <- err_gr[names(err_gr) == "q50"]
 
 #Need to make list into one data frame with multiple polygons
 polygons.99 <- err.grid.99[[1]]
@@ -122,9 +133,9 @@ for(i in 2:length(err.grid.50)) {
   polygons.50 <- rbind(polygons.50, err.grid.50[[i]])
 }
 
-plot(bathy)
-plot(polygons.99 %>% filter(lyr.1 == 1), col = "gray", border = "gray", add = TRUE)
-plot(polygons.50 %>% filter(lyr.1 == 1), col = "blue", border = "blue", add = TRUE)
-plot(land2 %>% filter(depth == 0), col = "gray10", add = TRUE)
+terra::plot(bathy)
+# plot(polygons.99 %>% tidyterra::filter(lyr.1 == 1), col = "gray", border = "gray", add = TRUE)
+# plot(polygons.50 %>% tidyterra::filter(lyr.1 == 1), col = "blue", border = "blue", add = TRUE)
+# plot(land2 %>% tidyterra::filter(depth == 0), col = "gray10", add = TRUE)
 ```
 
