@@ -20,17 +20,17 @@ knitr::opts_chunk$set(
 The `tag` package can be installed from [github](https://github.com/KSiwicke/tag) with:
 ```{r, eval = FALSE}
 # install.packages("devtools")
-devtools::install_github("KSiwicke/tag")
+# devtools::install_github("KSiwicke/tag")
 ```
 
 Load the *tag* package:
 ```{r setup, eval = FALSE}
-library(tag)
+# library(tag)
 ```
 
 
 ```{r, echo = FALSE}
-library(magrittr)
+# library(magrittr)
 # library(terra)
 # library(tictoc)
 # library(tidyterra)
@@ -41,30 +41,20 @@ library(magrittr)
 ```
 
 ```{r} 
-bathy <- tag::cod_ex[[1]]
-```
-
-```{r} 
-stars::st_dimensions(bathy)$x$delta # resolution in x direction
-stars::st_dimensions(bathy)$y$delta # resolution in y direction
-h <- stars::st_dimensions(bathy)$x$delta
-```
-
-```{r} 
-land <- bathy %>%
-  dplyr::mutate(depth = ifelse(depth < 15, 0, 1)) # 15-m cutoff, but can change as needed
-
-```
-
-```{r} 
-fish_data <- tag::cod_ex[[3]]
-L <- tag::cod_ex[[4]]
+# bathy <- tag::cod_ex[[1]]
+# stars::st_dimensions(bathy)$x$delta # resolution in x direction
+# stars::st_dimensions(bathy)$y$delta # resolution in y direction
+# h <- stars::st_dimensions(bathy)$x$delta
+# land <- bathy %>%
+#   dplyr::mutate(depth = ifelse(depth < 15, 0, 1)) # 15-m cutoff, but can change as needed
+# fish_data <- tag::cod_ex[[3]]
+# L <- tag::cod_ex[[4]]
 ```
 
 You can estimate diffusion coefficients through maximum likelihood estimation. The est_1d function returns the negative log likelihood.
 
 ``` {r}
-tag::est_1d(log_D = log(90), h = h, L = L, land = t(land$depth))
+# tag::est_1d(log_D = log(90), h = h, L = L, land = t(land$depth))
 # example, returns the negative log likelihood
 
 # 
@@ -86,61 +76,65 @@ Also, when not log transforming D, the estimate appears to have been a localized
 
 This first example uses a single D, and this no longer uses the *raster* but still uses the *imager* package to convolve. 
 ```{r, fig.height = 20, fig.width = 12}
-tictoc::tic()
-smooth <- tag::fwd_bck(D = 94, h = h, L = L, land = t(land$depth), fish_data = fish_data)
-tictoc::toc()
-
-sm_ras <- terra::rast(smooth)
-par(mfrow = c(4,1))
-terra::plot(sm_ras[[20]])
-terra::plot(sm_ras[[40]])
-terra::plot(sm_ras[[60]])
-terra::plot(sm_ras[[80]])
+# tictoc::tic()
+# smooth <- tag::fwd_bck(D = 94, h = h, L = L, land = t(land$depth), fish_data = fish_data)
+# tictoc::toc()
+# 
+# sm_ras <- terra::rast(smooth)
+# par(mfrow = c(4,1))
+# terra::plot(sm_ras[[20]])
+# terra::plot(sm_ras[[40]])
+# terra::plot(sm_ras[[60]])
+# terra::plot(sm_ras[[80]])
 ```
 
 This version only has removed *raster* and *imager* packages, and is mainly using the *terra* package. One main difference is that the land layer is passed in as a SpatRaster. One nice feature of this version is that there is no transposing for going between a raster and a matrix/array like there was before.
 
 ```{r, fig.height = 20, fig.width = 12}
-bathy <- terra::rast(cod_ex[[1]]) # load bathymetry as a stars object, but convert to terra raster
-names(bathy) <- "depth"
-h <- terra::res(bathy)[1] # resolution in meters
+# bathy <- terra::rast(cod_ex[[1]]) # load bathymetry as a stars object, but convert to terra raster
+# names(bathy) <- "depth"
+# h <- terra::res(bathy)[1] # resolution in meters
 
 # identify land as a 0
-land2 <- bathy %>%
-  tidyterra::mutate(depth = ifelse(depth < 15, 0, 1)) %>% 
-  tidyterra::select(depth) # 15-m cutoff, but can change as needed
+# land2 <- bathy %>%
+  # tidyterra::mutate(depth = ifelse(depth < 15, 0, 1)) %>% 
+  # tidyterra::select(depth) # 15-m cutoff, but can change as needed
 
-tictoc::tic()
-smooth <- tag::fwd_bck_terra(D = 94, h = h, L = L, land = land2, fish_data = fish_data)
-tictoc::toc()
-
-sm_ras <- terra::rast(smooth)
-par(mfrow = c(4,1))
-terra::plot(sm_ras[[20]])
-terra::plot(sm_ras[[40]])
-terra::plot(sm_ras[[60]])
-terra::plot(sm_ras[[80]])
+# tictoc::tic()
+# smooth2 <- tag::fwd_bck_terra(D = 94, h = h, L = L, land = land2, fish_data = fish_data)
+# tictoc::toc()
+# 
+# sm_ras2 <- terra::rast(smooth2)
+# par(mfrow = c(4,2))
+# terra::plot(sm_ras[[20]])
+# terra::plot(sm_ras2[[20]])
+# terra::plot(sm_ras[[40]])
+# terra::plot(sm_ras2[[40]])
+# terra::plot(sm_ras[[60]])
+# terra::plot(sm_ras2[[60]])
+# terra::plot(sm_ras[[80]])
+# terra::plot(sm_ras2[[80]])
 ```
 
 ```{r, fig.height = 10, fig.width = 15}
-err_gr <- tag::err_grid(smooth = smooth, fish_data = fish_data)
-
-err.grid.99 <- err_gr[names(err_gr) == "q99"]
-
-err.grid.50 <- err_gr[names(err_gr) == "q50"]
+# err_gr <- tag::err_grid(smooth = smooth, fish_data = fish_data)
+# 
+# err.grid.99 <- err_gr[names(err_gr) == "q99"]
+# 
+# err.grid.50 <- err_gr[names(err_gr) == "q50"]
 
 #Need to make list into one data frame with multiple polygons
-polygons.99 <- err.grid.99[[1]]
-for(i in 2:length(err.grid.99)) {
-  polygons.99 <- rbind(polygons.99, err.grid.99[[i]])
-}
-
-polygons.50 <- err.grid.50[[1]]
-for(i in 2:length(err.grid.50)) {
-  polygons.50 <- rbind(polygons.50, err.grid.50[[i]])
-}
-
-terra::plot(bathy)
+# polygons.99 <- err.grid.99[[1]]
+# for(i in 2:length(err.grid.99)) {
+#   polygons.99 <- rbind(polygons.99, err.grid.99[[i]])
+# }
+# 
+# polygons.50 <- err.grid.50[[1]]
+# for(i in 2:length(err.grid.50)) {
+#   polygons.50 <- rbind(polygons.50, err.grid.50[[i]])
+# }
+# 
+# terra::plot(bathy)
 # plot(polygons.99 %>% tidyterra::filter(lyr.1 == 1), col = "gray", border = "gray", add = TRUE)
 # plot(polygons.50 %>% tidyterra::filter(lyr.1 == 1), col = "blue", border = "blue", add = TRUE)
 # plot(land2 %>% tidyterra::filter(depth == 0), col = "gray10", add = TRUE)
