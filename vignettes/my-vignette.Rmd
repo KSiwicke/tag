@@ -30,6 +30,7 @@ library(tag)
 
 
 ```{r, echo = FALSE}
+library(magrittr)
 # library(terra)
 # library(tictoc)
 # library(tidyterra)
@@ -40,18 +41,24 @@ library(tag)
 ```
 
 ```{r} 
-devtools::load_all() # To delete
+bathy <- tag::cod_ex[[1]]
+```
 
-bathy <- cod_ex[[1]]
+```{r} 
 stars::st_dimensions(bathy)$x$delta # resolution in x direction
 stars::st_dimensions(bathy)$y$delta # resolution in y direction
 h <- stars::st_dimensions(bathy)$x$delta
+```
 
+```{r} 
 land <- bathy %>%
   dplyr::mutate(depth = ifelse(depth < 15, 0, 1)) # 15-m cutoff, but can change as needed
 
-fish_data <- cod_ex[[3]]
-L <- cod_ex[[4]]
+```
+
+```{r} 
+fish_data <- tag::cod_ex[[3]]
+L <- tag::cod_ex[[4]]
 ```
 
 You can estimate diffusion coefficients through maximum likelihood estimation. The est_1d function returns the negative log likelihood.

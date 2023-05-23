@@ -3,8 +3,5 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   my-vignette: my-vignette.html
-last_built: 2023-05-22T20:33Z
-urls:
-  reference: https://ksiwicke.github.io/tag/reference
-  article: https://ksiwicke.github.io/tag/articles
+last_built: 2023-05-23T16:09Z
 
