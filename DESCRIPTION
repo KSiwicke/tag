@@ -3,7 +3,7 @@ Title: Runs Hidden Markov Model for Electronic Tag Derived Likelihood
 Version: 0.0.0.9000
 Authors@R: 
     person("Kevin", "Siwicke", , "kevin.siwicke@noaa.gov", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0003-4555-5272"))
+           comment = c(ORCID = "0000-0003-4555-5272")),
     person("Julie", "Nielsen", , "julie.nielsen@gmail.com, role = c("cre", "ctb"))
            
 Description: Given a likelihood from an electronically tagged fish, the tag package
